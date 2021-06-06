@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Stack.Logic
+namespace Queue.Logic
 {
     /// <summary>
-    /// Realization of interface IStack
+    /// Realization of interface IQueue
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Stack<T> : IStack<T>
+    public class Queue<T> : IQueue<T>
     {
         /// <summary>
-        /// Enum for declaration type of stack
+        /// Enum for declaration type of queue
         /// </summary>
-        private StackType StackType;
+        private QueueType QueueType;
 
         /// <summary>
         /// Generic array for add/delete elements
@@ -43,38 +44,35 @@ namespace Stack.Logic
         /// <summary>
         /// Get the last element of stack
         /// </summary>
-        public T Peek => Array[Count - 1];
+        public T Peek => Array[0];
 
         /// <summary>
         /// Constructor for declarate a static stack
         /// </summary>
         /// <param name="capacity"></param>
-        public Stack(int capacity)
+        public Queue(int capacity)
         {
             Capacity = capacity;
-            StackType = StackType.STATIC;
+            QueueType = QueueType.STATIC;
         }
 
         /// <summary>
-        /// Constructor for declarate a dynamic stack
+        /// Constructor for declarate a static stack
         /// </summary>
-        public Stack()
+        public Queue()
         {
-            StackType = StackType.DYNAMIC;
+            QueueType = QueueType.DYNAMIC;
         }
 
         /// <summary>
-        /// Add item in the stack
+        /// Add item in the queue
         /// </summary>
         /// <param name="item"></param>
-        public void Push(T item)
+        public void Enqueue(T item)
         {
-            if (StackType == StackType.DYNAMIC)
+            if (QueueType == QueueType.DYNAMIC)
             {
-                if (IsEmpty)
-                {
-                    Array = new T[] { item };
-                }
+                if (IsEmpty) Array = new T[] { item };
                 else
                 {
                     var array = new T[Count + 1];
@@ -88,10 +86,7 @@ namespace Stack.Logic
             }
             else
             {
-                if (IsEmpty)
-                {
-                    Array = new T[] { item };
-                }
+                if (IsEmpty) Array = new T[] { item };
                 else
                 {
                     if (!IsFull)
@@ -101,13 +96,10 @@ namespace Stack.Logic
                         {
                             array[i] = Array[i];
                         }
-                        array[array.Length - 1] = item;
+                        array[Count] = item;
                         Array = array;
                     }
-                    else
-                    {
-                        throw new InvalidOperationException("Стек переполнен");
-                    }
+                    else throw new InvalidOperationException("Queue is full");
                 }
             }
         }
@@ -115,19 +107,18 @@ namespace Stack.Logic
         /// <summary>
         /// Delete item of the stack
         /// </summary>
-        public void Pop()
+        public void Dequeue()
         {
-            if (IsEmpty)
-            {
-                throw new InvalidOperationException("Stack is empty");
-            }
+            if (IsEmpty) throw new InvalidOperationException("Queue is empty");
             else
             {
                 var array = new T[Count - 1];
-                for (int i = 0; i < array.Length; i++)
+
+                for (int i = 1; i < array.Length; i++)
                 {
                     array[i] = Array[i];
                 }
+
                 Array = array;
             }
         }
@@ -136,17 +127,17 @@ namespace Stack.Logic
         /// Support foreach cycle
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-            return Array.GetEnumerator();
-        }
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            foreach (T item in Array)
+            foreach(T item in Array)
             {
                 yield return item;
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Array.GetEnumerator();
         }
     }
 }
