@@ -9,7 +9,7 @@ namespace Queue.Logic
         bool IsFull { get; }
         bool IsEmpty { get; }
         T Peek { get; }
-        public void Enqueue(T item);
-        public void Dequeue();
+        void Enqueue(T item);
+        void Dequeue();
     }
 }

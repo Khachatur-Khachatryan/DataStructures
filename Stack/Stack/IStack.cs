@@ -9,7 +9,7 @@ namespace Stack.Logic
         bool IsFull { get; }
         bool IsEmpty { get; }
         T Peek { get; }
-        public void Push(T item);
-        public void Pop();
+        void Push(T item);
+        void Pop();
     }
 }

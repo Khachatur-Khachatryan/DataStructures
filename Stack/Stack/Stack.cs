@@ -23,7 +23,7 @@ namespace Stack.Logic
         /// <summary>
         /// Maximal capacity of stack
         /// </summary>
-        public int Capacity { get; private set; }
+        public int Capacity { get; }
 
         /// <summary>
         /// Count of elements in Array
