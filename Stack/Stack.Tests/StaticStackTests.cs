@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 using FluentAssertions;
 using Stack.Logic;
@@ -29,7 +30,7 @@ namespace Stack.Tests
             stack.Push(398);
 
             // Assert
-            stack.Array.Should().Equals(expected);
+            stack.ToArray().Should().Equals(expected);
             stack.Capacity.Should().Equals(5);
             stack.Count.Should().Equals(5);
             stack.Peek.Should().Equals(398);
@@ -76,7 +77,7 @@ namespace Stack.Tests
             stack.Pop();
 
             // Assert
-            stack.Array.Should().Equals(expected);
+            stack.ToArray().Should().Equals(expected);
             stack.Capacity.Should().Equals(5);
             stack.Count.Should().Equals(5);
             stack.Peek.Should().Equals(124);

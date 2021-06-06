@@ -4,7 +4,6 @@ namespace Stack.Logic
 {
     public interface IStack<T> : IEnumerable<T>
     {
-        T[] Array { get; }
         int Capacity { get; }
         int Count { get; }
         bool IsFull { get; }

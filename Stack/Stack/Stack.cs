@@ -18,7 +18,7 @@ namespace Stack.Logic
         /// <summary>
         /// Generic array for add/delete elements
         /// </summary>
-        public T[] Array { get; private set; } = new T[0];
+        private T[] Array = new T[0];
 
         /// <summary>
         /// Maximal capacity of stack
