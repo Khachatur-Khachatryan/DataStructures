@@ -5,15 +5,21 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stack", "Stack", "{44BAA550-73CB-4AEF-8917-9FC269036851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stack", "Stack\Stack\Stack.csproj", "{6DBC9B94-0B83-4F31-BE3A-141ECDC630EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stack", "Stack\Stack\Stack.csproj", "{6DBC9B94-0B83-4F31-BE3A-141ECDC630EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stack.Tests", "Stack\Stack.Tests\Stack.Tests.csproj", "{CC0913B9-D31E-4652-9292-BF36FBFE665A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stack.Tests", "Stack\Stack.Tests\Stack.Tests.csproj", "{CC0913B9-D31E-4652-9292-BF36FBFE665A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Queue", "Queue", "{84127B48-12E1-4742-98F1-3D3E3221FF9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queue.Logic", "Queue\Queue.Logic\Queue.Logic.csproj", "{C445D0E6-54BB-4F69-AC17-DD74A30E5BB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Queue.Logic", "Queue\Queue.Logic\Queue.Logic.csproj", "{C445D0E6-54BB-4F69-AC17-DD74A30E5BB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queue.Tests", "Queue\Queue.Tests\Queue.Tests.csproj", "{3BF42390-2985-4B37-BFCE-AE73E9D005D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Queue.Tests", "Queue\Queue.Tests\Queue.Tests.csproj", "{3BF42390-2985-4B37-BFCE-AE73E9D005D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linked List", "Linked List", "{C196EF2B-6F75-4304-AED6-C3EA5405E343}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkedList.Logic", "Double Linked List\DoubleLinkedList.Logic\LinkedList.Logic.csproj", "{6298CA7B-A65C-4AEF-8D0E-A7454FEF88B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkedList.Tests", "LinkedList.Tests\LinkedList.Tests.csproj", "{2E3B5774-F431-4120-95A5-426702B7B439}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +43,14 @@ Global
 		{3BF42390-2985-4B37-BFCE-AE73E9D005D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BF42390-2985-4B37-BFCE-AE73E9D005D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BF42390-2985-4B37-BFCE-AE73E9D005D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6298CA7B-A65C-4AEF-8D0E-A7454FEF88B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6298CA7B-A65C-4AEF-8D0E-A7454FEF88B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6298CA7B-A65C-4AEF-8D0E-A7454FEF88B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6298CA7B-A65C-4AEF-8D0E-A7454FEF88B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E3B5774-F431-4120-95A5-426702B7B439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E3B5774-F431-4120-95A5-426702B7B439}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E3B5774-F431-4120-95A5-426702B7B439}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E3B5774-F431-4120-95A5-426702B7B439}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +60,8 @@ Global
 		{CC0913B9-D31E-4652-9292-BF36FBFE665A} = {44BAA550-73CB-4AEF-8917-9FC269036851}
 		{C445D0E6-54BB-4F69-AC17-DD74A30E5BB4} = {84127B48-12E1-4742-98F1-3D3E3221FF9C}
 		{3BF42390-2985-4B37-BFCE-AE73E9D005D0} = {84127B48-12E1-4742-98F1-3D3E3221FF9C}
+		{6298CA7B-A65C-4AEF-8D0E-A7454FEF88B5} = {C196EF2B-6F75-4304-AED6-C3EA5405E343}
+		{2E3B5774-F431-4120-95A5-426702B7B439} = {C196EF2B-6F75-4304-AED6-C3EA5405E343}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A0C37BA1-A10B-489C-9F07-1CDF5D8F47B7}
