@@ -49,9 +49,9 @@ namespace LinkedList.Tests
         {
             // Arrange
             var linkedList = new LinkedList<dynamic>();
-            linkedList.AddHead(13); 
-            linkedList.AddHead('$'); 
-            linkedList.AddHead("stalker top"); 
+            linkedList.AddHead(13);
+            linkedList.AddHead('$');
+            linkedList.AddHead("stalker top");
             linkedList.AddHead(true);
             linkedList.AddTail(0.24F);
 
@@ -86,6 +86,27 @@ namespace LinkedList.Tests
             linkedList.Tail.Should().Equals(98);
             linkedList.Count.Should().Equals(3);
             linkedList.IsEmpty.Should().BeFalse();
+        }
+
+        [Test]
+        public void ClearTest()
+        {
+            // Arrange
+            var linkedList = new LinkedList<int>();
+            linkedList.AddHead(98);
+            linkedList.AddHead(75);
+            linkedList.AddHead(14);
+            linkedList.AddHead(52);
+            linkedList.AddTail(21);
+
+            // Act
+            linkedList.Clear();
+
+            // Assert
+            linkedList.Head.Should().Equals(null);
+            linkedList.Tail.Should().Equals(null);
+            linkedList.Count.Should().Equals(0);
+            linkedList.IsEmpty.Should().BeTrue();
         }
     }
 }
