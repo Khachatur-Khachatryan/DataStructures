@@ -1,4 +1,8 @@
-﻿namespace LinkedList.Logic
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace LinkedList.Logic
 {
     /// <summary>
     /// Realization of interface ILinkedList
@@ -30,6 +34,17 @@
         /// Check is empty the stack
         /// </summary>
         public bool IsEmpty => Count == 0;
+        public void AddAfter(int id, T data)
+        {
+            var current = Find(id);
+            var elem = new Element<T>(data);
+
+            elem.Next = current.Next;
+            elem.Previous = current;
+            current.Next = elem;
+
+            count++;
+        }
 
         /// <summary>
         /// Add the elemnt before Head
@@ -59,22 +74,21 @@
             count++;
         }
 
-        /// <summary>
-        /// Clear all linked list
-        /// </summary>
-        public void Clear()
+        public void RemoveAfter(int id, T data) 
         {
-            Head = null;
-            Tail = null;
-            count = 0;
+            var current = Find(id);
+
+            current.Next = current.Next.Next;
+            current.Next.Previous = current;
+
+            count--;
         }
 
         /// <summary>
         /// Remove first element of list
         /// </summary>
         public void RemoveHead()
-        {
-            Head.Next = Head.Next.Next;
+        { 
             Head = (Element<T>)Head.Next;
             Head.Previous = null;
 
@@ -86,11 +100,48 @@
         /// </summary>
         public void RemoveTail()
         {
-            Tail.Previous = Tail.Previous.Previous;
-            Tail = (Element<T>)Tail.Previous;
+            //    Tail.Previous = Tail.Previous.Previous;
+            //    Tail = (Element<T>) Tail.Previous;
+            //    Tail.Next = null;
+            Tail = (Element<T>) Tail.Previous;
             Tail.Next = null;
 
             count--;
+        }
+
+        /// <summary>
+        /// Reverse the list
+        /// </summary>
+        public void Reverse()
+        {
+            var element = new Element<T>();
+            while (element.Next != null)
+            {
+                var tmp = element.Previous;
+                element.Previous = element.Next;
+                element.Next = tmp;
+            }
+        }
+
+        /// <summary>
+        /// Clear all linked list
+        /// </summary>
+        public void Clear()
+        {
+            Head = null;
+            Tail = null;
+            count = 0;
+        }
+
+        public IElement<T> Find(int id) 
+        {
+            if (id > Count) throw new IndexOutOfRangeException();
+            
+            var current = Head;
+
+            for (int i = 0; i < id; i++) current = (Element<T>)current.Next;
+            
+            return current;
         }
     }
 }
