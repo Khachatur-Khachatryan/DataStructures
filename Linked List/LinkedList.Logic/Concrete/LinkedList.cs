@@ -43,6 +43,8 @@ namespace LinkedList.Logic
         {
             var current = new Element<T>(data);
 
+            if (elem.Next == null && elem.Previous == null) throw new InvalidOperationException();
+
             if (elem == Tail) AddTail(data);
             else if (elem == Head) AddHead(data);
             else
@@ -92,6 +94,8 @@ namespace LinkedList.Logic
         /// <param name="elem"></param>
         public void RemoveAfter(IElement<T> elem)
         {
+            if (elem.Next == null && elem.Previous == null) throw new InvalidOperationException();
+
             if (elem == Tail) RemoveTail();
             else if (elem == Head) RemoveHead();
             else

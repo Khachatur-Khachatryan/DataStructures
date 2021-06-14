@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using FluentAssertions;
 using LinkedList.Logic;
 
@@ -62,12 +63,13 @@ namespace LinkedList.Tests
             linkedList.AddHead(251);
             linkedList.AddHead(634);
             linkedList.AddTail(498);
-            var elem1 = linkedList.Find(251);
-            var elem2 = linkedList.Tail;
+            var elem1 = (Element<int>) linkedList.Find(634);
+            var elem2 = (Element<int>) linkedList.Tail;
 
             // Act
             linkedList.AddAfter(elem1, 236);
             linkedList.AddAfter(elem2, 748);
+            Action act = () => linkedList.AddAfter(new Element<int>(478), 34);
 
             // Assert
             linkedList.Head.Should().Equals(634);
@@ -75,6 +77,7 @@ namespace LinkedList.Tests
             linkedList.Count.Should().Equals(5);
             linkedList.IsEmpty.Should().BeFalse();
             linkedList.Contains(634).Should().BeTrue();
+            act.Should().Throw<InvalidOperationException>();
         }
 
         /// <summary>
@@ -95,12 +98,14 @@ namespace LinkedList.Tests
             // Act
             linkedList.RemoveAfter(elem1);
             linkedList.RemoveAfter(elem2);
+            Action act = () => linkedList.RemoveAfter(new Element<int>(25));
 
             // Assert
             linkedList.Head.Should().Equals(4689);
             linkedList.Tail.Should().Equals(786);
             linkedList.Count.Should().Equals(2);
             linkedList.IsEmpty.Should().BeFalse();
+            act.Should().Throw<InvalidOperationException>();
         }
 
         /// <summary>
@@ -226,15 +231,17 @@ namespace LinkedList.Tests
             linkedList.AddTail(96);
 
             // Act
-            //var i = (Element<int>) linkedList.Find(6);
-            //var j = (Element<int>) linkedList.Find(96);
+            var i = (Element<int>)linkedList.Find(6);
+            var j = (Element<int>)linkedList.Find(96);
 
             // Assert
             linkedList.Count.Should().Equals(5);
             linkedList.IsEmpty.Should().BeFalse();
             linkedList.Contains(42).Should().BeFalse();
-            //i.Should().Equals(linkedList.Head);
-            //j.Should().Equals(linkedList.Tail);
+            i.Should().Equals(linkedList.Head);
+            i.Next.Should().Equals(754);
+            j.Should().Equals(linkedList.Tail);
+
         }
     }
 }
