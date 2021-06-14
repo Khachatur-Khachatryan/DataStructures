@@ -18,12 +18,12 @@ namespace LinkedList.Logic
         /// <summary>
         /// First element 
         /// </summary>
-        public Element<T> Head { get; set; } = new Element<T>();
+        public IElement<T> Head { get; set; } = new Element<T>();
 
         /// <summary>
         /// Last element 
         /// </summary>
-        public Element<T> Tail { get; set; } = new Element<T>();
+        public IElement<T> Tail { get; set; } = new Element<T>();
 
         /// <summary>
         /// Count-prop
@@ -34,14 +34,23 @@ namespace LinkedList.Logic
         /// Check is empty the stack
         /// </summary>
         public bool IsEmpty => Count == 0;
-        public void AddAfter(int id, T data)
-        {
-            var current = Find(id);
-            var elem = new Element<T>(data);
 
-            elem.Next = current.Next;
-            elem.Previous = current;
-            current.Next = elem;
+        /// <summary>
+        /// Add new element after an existing item
+        /// </summary>
+        /// <param name="elem"></param>
+        public void AddAfter(IElement<T> elem, T data)
+        {
+            var current = new Element<T>(data);
+
+            if (elem == Tail) AddTail(data);
+            else if (elem == Head) AddHead(data);
+            else
+            {
+                current.Previous = elem;
+                current.Next = elem.Next;
+                elem.Next = current;
+            }
 
             count++;
         }
@@ -50,7 +59,7 @@ namespace LinkedList.Logic
         /// Add the elemnt before Head
         /// </summary>
         /// <param name="data"></param>
-        public void AddHead(T data)
+        public IElement<T> AddHead(T data)
         {
             var head = new Element<T>(data);
             head.Next = Head;
@@ -58,30 +67,41 @@ namespace LinkedList.Logic
             Head = head;
 
             count++;
+            return Head;
         }
 
         /// <summary>
         /// Add the element after the Tail
         /// </summary>
         /// <param name="data"></param>
-        public void AddTail(T data)
+        public IElement<T> AddTail(T data)
         {
             var tail = new Element<T>(data);
             tail.Previous = Tail;
             tail.Next = null;
+            Tail.Next = tail;
             Tail = tail;
 
             count++;
+            return Tail;
         }
 
-        public void RemoveAfter(int id, T data) 
+        /// <summary>
+        /// Remove element after existing item
+        /// </summary>
+        /// <param name="elem"></param>
+        public void RemoveAfter(IElement<T> elem)
         {
-            var current = Find(id);
+            if (elem == Tail) RemoveTail();
+            else if (elem == Head) RemoveHead();
+            else
+            {
+                elem.Next = null;
+                elem.Next = elem.Next.Next;
+                elem.Next.Previous = elem;
+            }
 
-            current.Next = current.Next.Next;
-            current.Next.Previous = current;
-
-            count--;
+            count++;
         }
 
         /// <summary>
@@ -100,9 +120,6 @@ namespace LinkedList.Logic
         /// </summary>
         public void RemoveTail()
         {
-            //    Tail.Previous = Tail.Previous.Previous;
-            //    Tail = (Element<T>) Tail.Previous;
-            //    Tail.Next = null;
             Tail = (Element<T>) Tail.Previous;
             Tail.Next = null;
 
@@ -133,15 +150,44 @@ namespace LinkedList.Logic
             count = 0;
         }
 
-        public IElement<T> Find(int id) 
+        /// <summary>
+        /// Find element by data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public IElement<T> Find(T data) 
         {
-            if (id > Count) throw new IndexOutOfRangeException();
-            
             var current = Head;
 
-            for (int i = 0; i < id; i++) current = (Element<T>)current.Next;
+            for (int i = 0; i < Count; i++) 
+            {
+
+                if (current.Data.Equals(data)) break;
+                else if (current == null) break;
+                current = current.Next;
+            }
             
             return current;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool Contains(T data)
+        {
+            var current = Head;
+
+            for (int i = 1; i < Count; i++)
+            {
+                if (current.Data.Equals(data)) return true;
+                else if (current == null) return false;
+                current = current.Next;
+            }
+
+            return false;
+        }
+
     }
 }

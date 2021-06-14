@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using FluentAssertions;
 using LinkedList.Logic;
 
@@ -8,6 +7,9 @@ namespace LinkedList.Tests
     [TestFixture]
     public class Tests
     {
+        /// <summary>
+        /// Test for method AddHead(T data)
+        /// </summary>
         [Test]
         public void AddHeadTest()
         {
@@ -24,9 +26,12 @@ namespace LinkedList.Tests
             linkedList.Tail.Should().Equals(24);
             linkedList.Count.Should().Equals(3);
             linkedList.IsEmpty.Should().BeFalse();
-            linkedList.Find(1).Should().Equals(41);
+            linkedList.Contains(37).Should().BeTrue();
         }
 
+        /// <summary>
+        /// Test for method AddTail(T data)
+        /// </summary>
         [Test]
         public void AddTailTest()
         {
@@ -43,61 +48,90 @@ namespace LinkedList.Tests
             linkedList.Tail.Should().Equals('}');
             linkedList.Count.Should().Equals(3);
             linkedList.IsEmpty.Should().BeFalse();
-            linkedList.Find(1).Should().Equals('♂');
+            linkedList.Contains('3').Should().BeFalse();
         }
 
+        /// <summary>
+        /// Test for method AddAfter(IElement<T> elem, T data);
+        /// </summary>
         [Test]
         public void AddAfterTest()
         {
-            // Arrange
+            // Arrange 
             var linkedList = new LinkedList<int>();
-            linkedList.AddHead(24);
-            linkedList.AddHead(25);
-            linkedList.AddTail(958);
-
-            var expected = new LinkedList<int>();
-            expected.AddHead(24);
-            expected.AddHead(25);
-            expected.AddHead(63);
-            expected.AddHead(87);
-            expected.AddTail(958);
-
+            linkedList.AddHead(251);
+            linkedList.AddHead(634);
+            linkedList.AddTail(498);
+            var elem1 = linkedList.Find(251);
+            var elem2 = linkedList.Tail;
 
             // Act
-            linkedList.AddAfter(2, 63);
-            linkedList.AddAfter(3, 87);
+            linkedList.AddAfter(elem1, 236);
+            linkedList.AddAfter(elem2, 748);
 
             // Assert
-            linkedList.Head.Should().Equals(24);
-            linkedList.Tail.Should().Equals(958);
+            linkedList.Head.Should().Equals(634);
+            linkedList.Tail.Should().Equals(748);
             linkedList.Count.Should().Equals(5);
             linkedList.IsEmpty.Should().BeFalse();
-            linkedList.Find(3).Should().Equals(63);
+            linkedList.Contains(634).Should().BeTrue();
         }
 
+        /// <summary>
+        /// Test for method RemoveAfter(IElement<T> elem, T data)
+        /// </summary>
+        [Test]
+        public void RemoveAfterTest()
+        {
+            // Arrange 
+            var linkedList = new LinkedList<int>();
+            linkedList.AddHead(4689);
+            linkedList.AddHead(786);
+            linkedList.AddTail(91);
+            linkedList.AddTail(23);
+            var elem1 = linkedList.Find(786);
+            var elem2 = linkedList.Tail;
+
+            // Act
+            linkedList.RemoveAfter(elem1);
+            linkedList.RemoveAfter(elem2);
+
+            // Assert
+            linkedList.Head.Should().Equals(4689);
+            linkedList.Tail.Should().Equals(786);
+            linkedList.Count.Should().Equals(2);
+            linkedList.IsEmpty.Should().BeFalse();
+        }
+
+        /// <summary>
+        /// Test for method RemoveHead()
+        /// </summary>
         [Test]
         public void RemoveHeadTest()
         {
             // Arrange
-            var linkedList = new LinkedList<dynamic>();
-            linkedList.AddHead(13);
-            linkedList.AddHead('$');
-            linkedList.AddHead("stalker top");
-            linkedList.AddHead(true);
-            linkedList.AddTail(0.24F);
+            var linkedList = new LinkedList<decimal>();
+            linkedList.AddHead(13M);
+            linkedList.AddHead(25.2632M);
+            linkedList.AddHead(3.14M);
+            linkedList.AddHead(6437.734734732M);
+            linkedList.AddTail(15.00001M);
 
             // Act
             linkedList.RemoveHead();
             linkedList.RemoveHead();
 
             // Assert
-            linkedList.Head.Should().Equals("stalker top");
-            linkedList.Tail.Should().Equals(0.24F);
+            linkedList.Head.Should().Equals(13M);
+            linkedList.Tail.Should().Equals(15.00001M);
             linkedList.Count.Should().Equals(3);
             linkedList.IsEmpty.Should().BeFalse();
-            linkedList.Find(3).Should().Equals(0.24F);
+            linkedList.Contains(62.32M).Should().BeFalse();
         }
 
+        /// <summary>
+        /// Test for method RemoveTail()
+        /// </summary>
         [Test]
         public void RemoveTailTest()
         {
@@ -118,9 +152,12 @@ namespace LinkedList.Tests
             linkedList.Tail.Should().Equals(98);
             linkedList.Count.Should().Equals(3);
             linkedList.IsEmpty.Should().BeFalse();
-            linkedList.Find(2).Should().Equals(45);
+            linkedList.Contains(13).Should().BeTrue();
         }
 
+        /// <summary>
+        /// Test for method Clear()
+        /// </summary>
         [Test]
         public void ClearTest()
         {
@@ -135,16 +172,17 @@ namespace LinkedList.Tests
             // Act
             linkedList.Clear();
 
-            Action act = () => linkedList.Find(3);
-
             // Assert
             linkedList.Head.Should().Equals(24);
             linkedList.Tail.Should().Equals(958);
             linkedList.Count.Should().Equals(5);
             linkedList.IsEmpty.Should().BeTrue();
-            act.Should().Throw<IndexOutOfRangeException>();
+            linkedList.Contains(64).Should().BeFalse();
         }
-        
+
+        /// <summary>
+        /// Test for method Reverse()
+        /// </summary>
         [Test]
         public void ReverseTest()
         {
@@ -167,11 +205,36 @@ namespace LinkedList.Tests
             linkedList.Reverse();
 
             // Assert
-            linkedList.Head.Should().Equals(21);
-            linkedList.Tail.Should().Equals(98);
+            linkedList.Equals(expected);
             linkedList.Count.Should().Equals(5);
-            linkedList.Find(1).Should().Equals(21);
             linkedList.IsEmpty.Should().BeFalse();
+            linkedList.Contains(52).Should().BeTrue();
+        }
+
+        /// <summary>
+        /// Test for method Find(T data)
+        /// </summary>
+        [Test]
+        public void FindTest()
+        {
+            // Arrange
+            var linkedList = new LinkedList<int>();
+            linkedList.AddHead(6);
+            linkedList.AddHead(52);
+            linkedList.AddHead(754);
+            linkedList.AddHead(176);
+            linkedList.AddTail(96);
+
+            // Act
+            //var i = (Element<int>) linkedList.Find(6);
+            //var j = (Element<int>) linkedList.Find(96);
+
+            // Assert
+            linkedList.Count.Should().Equals(5);
+            linkedList.IsEmpty.Should().BeFalse();
+            linkedList.Contains(42).Should().BeFalse();
+            //i.Should().Equals(linkedList.Head);
+            //j.Should().Equals(linkedList.Tail);
         }
     }
 }
