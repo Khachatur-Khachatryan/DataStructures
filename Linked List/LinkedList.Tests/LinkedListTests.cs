@@ -63,13 +63,15 @@ namespace LinkedList.Tests
             linkedList.AddHead(251);
             linkedList.AddHead(634);
             linkedList.AddTail(498);
-            var elem1 = (Element<int>) linkedList.Find(634);
-            var elem2 = (Element<int>) linkedList.Tail;
+            var node1 = (Node<int>) linkedList.Find(634);
+            var node2 = (Node<int>) linkedList.Tail;
+            var node3 = new Node<int>(632) { Next = node1, Previous = node2 };
 
             // Act
-            linkedList.AddAfter(elem1, 236);
-            linkedList.AddAfter(elem2, 748);
-            Action act = () => linkedList.AddAfter(new Element<int>(478), 34);
+            linkedList.AddAfter(node1, 236);
+            linkedList.AddAfter(node2, 748);
+            Action act = () => linkedList.AddAfter(new Node<int>(478), 34);
+            Action act2 = () => linkedList.AddAfter(node3, 362);
 
             // Assert
             linkedList.Head.Should().Equals(634);
@@ -77,7 +79,8 @@ namespace LinkedList.Tests
             linkedList.Count.Should().Equals(5);
             linkedList.IsEmpty.Should().BeFalse();
             linkedList.Contains(634).Should().BeTrue();
-            act.Should().Throw<InvalidOperationException>();
+            act.Should().Throw<EmptyNodeException>();
+            act2.Should().Throw<NotBelongToThisListException>();
         }
 
         /// <summary>
@@ -92,20 +95,23 @@ namespace LinkedList.Tests
             linkedList.AddHead(786);
             linkedList.AddTail(91);
             linkedList.AddTail(23);
-            var elem1 = linkedList.Find(786);
-            var elem2 = linkedList.Tail;
+            var node1 = linkedList.Find(786);
+            var node2 = linkedList.Tail;
+            var node3 = new Node<int>(632) { Next = node1, Previous = node2 };
 
             // Act
-            linkedList.RemoveAfter(elem1);
-            linkedList.RemoveAfter(elem2);
-            Action act = () => linkedList.RemoveAfter(new Element<int>(25));
+            linkedList.RemoveAfter(node1);
+            linkedList.RemoveAfter(node2);
+            Action act = () => linkedList.RemoveAfter(new Node<int>(25));
+            Action act2 = () => linkedList.RemoveAfter(node3);
 
             // Assert
             linkedList.Head.Should().Equals(4689);
             linkedList.Tail.Should().Equals(786);
             linkedList.Count.Should().Equals(2);
             linkedList.IsEmpty.Should().BeFalse();
-            act.Should().Throw<InvalidOperationException>();
+            act.Should().Throw<EmptyNodeException>();
+            act2.Should().Throw<NotBelongToThisListException>();
         }
 
         /// <summary>
@@ -231,17 +237,44 @@ namespace LinkedList.Tests
             linkedList.AddTail(96);
 
             // Act
-            var i = (Element<int>)linkedList.Find(6);
-            var j = (Element<int>)linkedList.Find(96);
+            var node1 = (Node<int>)linkedList.Find(6);
+            var node2 = (Node<int>)linkedList.Find(96);
 
             // Assert
             linkedList.Count.Should().Equals(5);
             linkedList.IsEmpty.Should().BeFalse();
             linkedList.Contains(42).Should().BeFalse();
-            i.Should().Equals(linkedList.Head);
-            i.Next.Should().Equals(754);
-            j.Should().Equals(linkedList.Tail);
+            node1.Should().Equals(linkedList.Head);
+            node2.Should().Equals(linkedList.Tail);
+        }
 
+        [Test]
+        public void ContainsTest()
+        {
+            // Arrange
+            var linkedList = new LinkedList<char>();
+            linkedList.AddHead('d');
+            linkedList.AddHead('}');
+            linkedList.AddHead('2');
+            linkedList.AddHead('ы');
+            linkedList.AddTail('/');
+
+            var node1 = linkedList.Find('}');
+            var node2 = linkedList.Find('ы');
+            // Act
+            var contains1 = linkedList.Contains(node1);
+            var contains2 = linkedList.Contains(node2);
+            var contains3 = linkedList.Contains(new Node<char>('.'));
+
+            // Assert
+            linkedList.Head.Should().Equals('ы');
+            linkedList.Tail.Should().Equals('/');
+            linkedList.Count.Should().Equals(5);
+            linkedList.IsEmpty.Should().BeFalse();
+            linkedList.Contains('5').Should().BeFalse();
+            contains1.Should().BeTrue();
+            contains2.Should().BeTrue();
+            contains3.Should().BeFalse();
         }
     }
 }

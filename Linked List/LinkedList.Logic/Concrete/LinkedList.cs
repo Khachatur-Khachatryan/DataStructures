@@ -18,12 +18,12 @@ namespace LinkedList.Logic
         /// <summary>
         /// First element 
         /// </summary>
-        public IElement<T> Head { get; set; } = new Element<T>();
+        public INode<T> Head { get; set; } = new Node<T>();
 
         /// <summary>
         /// Last element 
         /// </summary>
-        public IElement<T> Tail { get; set; } = new Element<T>();
+        public INode<T> Tail { get; set; } = new Node<T>();
 
         /// <summary>
         /// Count-prop
@@ -31,7 +31,7 @@ namespace LinkedList.Logic
         public int Count => count;
 
         /// <summary>
-        /// Check is empty the stack
+        /// Check is empty the linked list
         /// </summary>
         public bool IsEmpty => Count == 0;
 
@@ -39,19 +39,20 @@ namespace LinkedList.Logic
         /// Add new element after an existing item
         /// </summary>
         /// <param name="elem"></param>
-        public void AddAfter(IElement<T> elem, T data)
+        public void AddAfter(INode<T> node, T data)
         {
-            var current = new Element<T>(data);
+            var current = new Node<T>(data);
 
-            if (elem.Next == null && elem.Previous == null) throw new InvalidOperationException();
+            if (node.Next == null && node.Previous == null) throw new EmptyNodeException();
 
-            if (elem == Tail) AddTail(data);
-            else if (elem == Head) AddHead(data);
+            if (node == Tail) AddTail(data);
+            else if (node == Head) AddHead(data);
+            else if (Contains(node) == false) throw new NotBelongToThisListException();
             else
             {
-                current.Previous = elem;
-                current.Next = elem.Next;
-                elem.Next = current;
+                current.Previous = node;
+                current.Next = node.Next;
+                node.Next = current;
             }
 
             count++;
@@ -61,9 +62,9 @@ namespace LinkedList.Logic
         /// Add the elemnt before Head
         /// </summary>
         /// <param name="data"></param>
-        public IElement<T> AddHead(T data)
+        public INode<T> AddHead(T data)
         {
-            var head = new Element<T>(data);
+            var head = new Node<T>(data);
             head.Next = Head;
             head.Previous = null;
             Head = head;
@@ -76,9 +77,9 @@ namespace LinkedList.Logic
         /// Add the element after the Tail
         /// </summary>
         /// <param name="data"></param>
-        public IElement<T> AddTail(T data)
+        public INode<T> AddTail(T data)
         {
-            var tail = new Element<T>(data);
+            var tail = new Node<T>(data);
             tail.Previous = Tail;
             tail.Next = null;
             Tail.Next = tail;
@@ -92,17 +93,19 @@ namespace LinkedList.Logic
         /// Remove element after existing item
         /// </summary>
         /// <param name="elem"></param>
-        public void RemoveAfter(IElement<T> elem)
+        public void RemoveAfter(INode<T> node)
         {
-            if (elem.Next == null && elem.Previous == null) throw new InvalidOperationException();
+            if (node.Next == null && node.Previous == null) throw new EmptyNodeException();
 
-            if (elem == Tail) RemoveTail();
-            else if (elem == Head) RemoveHead();
+
+            if (node == Tail) RemoveTail();
+            else if (node == Head) RemoveHead();
+            else if (Contains(node) == false) throw new NotBelongToThisListException();
             else
             {
-                elem.Next = null;
-                elem.Next = elem.Next.Next;
-                elem.Next.Previous = elem;
+                node.Next = null;
+                node.Next = node.Next.Next;
+                node.Next.Previous = node;
             }
 
             count++;
@@ -113,7 +116,7 @@ namespace LinkedList.Logic
         /// </summary>
         public void RemoveHead()
         { 
-            Head = (Element<T>)Head.Next;
+            Head = (Node<T>)Head.Next;
             Head.Previous = null;
 
             count--;
@@ -124,7 +127,7 @@ namespace LinkedList.Logic
         /// </summary>
         public void RemoveTail()
         {
-            Tail = (Element<T>) Tail.Previous;
+            Tail = (Node<T>) Tail.Previous;
             Tail.Next = null;
 
             count--;
@@ -135,7 +138,7 @@ namespace LinkedList.Logic
         /// </summary>
         public void Reverse()
         {
-            var element = new Element<T>();
+            var element = new Node<T>();
             while (element.Next != null)
             {
                 var tmp = element.Previous;
@@ -159,7 +162,7 @@ namespace LinkedList.Logic
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public IElement<T> Find(T data) 
+        public INode<T> Find(T data) 
         {
             var current = Head;
 
@@ -175,7 +178,7 @@ namespace LinkedList.Logic
         }
 
         /// <summary>
-        /// 
+        /// Chek contains the list this element with <param name="data"></param>
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -193,5 +196,24 @@ namespace LinkedList.Logic
             return false;
         }
 
+        /// <summary>
+        /// Chek contains the list this element
+        /// </summary>
+        /// <param name="elem"></param>
+        /// <returns></returns>
+        public bool Contains(INode<T> elem)
+        {
+            var current = Head;
+
+            for (int i = 0; i < Count; i++)
+            {
+                if (current == elem) return true;
+                else if (current == null) break;
+                //else if (current == Tail) break;
+                current = current.Next;
+            }
+
+            return false;
+        }
     }
 }

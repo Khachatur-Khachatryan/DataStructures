@@ -4,7 +4,7 @@
     /// Realization of interface IElement<T>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Element<T> : IElement<T>
+    public class Node<T> : INode<T>
     {
         /// <summary>
         /// Data of element
@@ -14,18 +14,18 @@
         /// <summary>
         /// Previous element
         /// </summary>
-        public IElement<T> Previous { get; set; }
+        public INode<T> Previous { get; set; }
 
         /// <summary>
         /// Next element
         /// </summary>
-        public IElement<T> Next { get; set; }
+        public INode<T> Next { get; set; }
 
-        public Element(T data)
+        public Node(T data)
         {
             Data = data;
         }
 
-        public Element() { }
+        public Node() { }
     }
 }
