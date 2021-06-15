@@ -8,9 +8,6 @@ namespace LinkedList.Tests
     [TestFixture]
     public class Tests
     {
-        /// <summary>
-        /// Test for method AddHead(T data)
-        /// </summary>
         [Test]
         public void AddHeadTest()
         {
@@ -29,10 +26,7 @@ namespace LinkedList.Tests
             linkedList.IsEmpty.Should().BeFalse();
             linkedList.Contains(37).Should().BeTrue();
         }
-
-        /// <summary>
-        /// Test for method AddTail(T data)
-        /// </summary>
+        
         [Test]
         public void AddTailTest()
         {
@@ -52,9 +46,6 @@ namespace LinkedList.Tests
             linkedList.Contains('3').Should().BeFalse();
         }
 
-        /// <summary>
-        /// Test for method AddAfter(IElement<T> elem, T data);
-        /// </summary>
         [Test]
         public void AddAfterTest()
         {
@@ -83,9 +74,6 @@ namespace LinkedList.Tests
             act2.Should().Throw<NotBelongToThisListException>();
         }
 
-        /// <summary>
-        /// Test for method RemoveAfter(IElement<T> elem, T data)
-        /// </summary>
         [Test]
         public void RemoveAfterTest()
         {
@@ -114,9 +102,6 @@ namespace LinkedList.Tests
             act2.Should().Throw<NotBelongToThisListException>();
         }
 
-        /// <summary>
-        /// Test for method RemoveHead()
-        /// </summary>
         [Test]
         public void RemoveHeadTest()
         {
@@ -140,9 +125,6 @@ namespace LinkedList.Tests
             linkedList.Contains(62.32M).Should().BeFalse();
         }
 
-        /// <summary>
-        /// Test for method RemoveTail()
-        /// </summary>
         [Test]
         public void RemoveTailTest()
         {
@@ -166,9 +148,6 @@ namespace LinkedList.Tests
             linkedList.Contains(13).Should().BeTrue();
         }
 
-        /// <summary>
-        /// Test for method Clear()
-        /// </summary>
         [Test]
         public void ClearTest()
         {
@@ -191,9 +170,6 @@ namespace LinkedList.Tests
             linkedList.Contains(64).Should().BeFalse();
         }
 
-        /// <summary>
-        /// Test for method Reverse()
-        /// </summary>
         [Test]
         public void ReverseTest()
         {
@@ -222,9 +198,6 @@ namespace LinkedList.Tests
             linkedList.Contains(52).Should().BeTrue();
         }
 
-        /// <summary>
-        /// Test for method Find(T data)
-        /// </summary>
         [Test]
         public void FindTest()
         {
