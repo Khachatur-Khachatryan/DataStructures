@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections;
-
-namespace LinkedList.Logic
+﻿namespace LinkedList.Logic
 {
     public interface ILinkedList<T>
     {

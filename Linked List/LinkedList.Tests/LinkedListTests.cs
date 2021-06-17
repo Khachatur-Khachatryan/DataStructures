@@ -56,13 +56,17 @@ namespace LinkedList.Tests
             linkedList.AddTail(498);
             var node1 = (Node<int>) linkedList.Find(634);
             var node2 = (Node<int>) linkedList.Tail;
-            var node3 = new Node<int>(632) { Next = node1, Previous = node2 };
+            var node3 = new Node<int>(362) { Next = node2 };
+            var node4 = new Node<int>(63) { Previous = node3 };
+            var node5 = new Node<int>(58) { Next = node4, Previous = node3 };
 
             // Act
             linkedList.AddAfter(node1, 236);
             linkedList.AddAfter(node2, 748);
             Action act = () => linkedList.AddAfter(new Node<int>(478), 34);
-            Action act2 = () => linkedList.AddAfter(node3, 362);
+            Action act2 = () => linkedList.AddAfter(node3, 236);
+            Action act3 = () => linkedList.AddAfter(node4, 285);
+            Action act4 = () => linkedList.AddAfter(node5, 845);
 
             // Assert
             linkedList.Head.Should().Equals(634);
@@ -71,7 +75,9 @@ namespace LinkedList.Tests
             linkedList.IsEmpty.Should().BeFalse();
             linkedList.Contains(634).Should().BeTrue();
             act.Should().Throw<EmptyNodeException>();
-            act2.Should().Throw<NotBelongToThisListException>();
+            act2.Should().Throw<NullPreviousException>();
+            act3.Should().Throw<NullNextException>();
+            act4.Should().Throw<NotBelongToThisListException>();
         }
 
         [Test]
@@ -85,21 +91,27 @@ namespace LinkedList.Tests
             linkedList.AddTail(23);
             var node1 = linkedList.Find(786);
             var node2 = linkedList.Tail;
-            var node3 = new Node<int>(632) { Next = node1, Previous = node2 };
+            var node3 = new Node<int>(362) { Next = node2 };
+            var node4 = new Node<int>(63) { Previous = node3 };
+            var node5 = new Node<int>(58) { Next = node4, Previous = node3 };
 
             // Act
             linkedList.RemoveAfter(node1);
             linkedList.RemoveAfter(node2);
-            Action act = () => linkedList.RemoveAfter(new Node<int>(25));
+            Action act = () => linkedList.RemoveAfter(new Node<int>(478));
             Action act2 = () => linkedList.RemoveAfter(node3);
+            Action act3 = () => linkedList.RemoveAfter(node4);
+            Action act4 = () => linkedList.RemoveAfter(node5);
 
             // Assert
             linkedList.Head.Should().Equals(4689);
             linkedList.Tail.Should().Equals(786);
             linkedList.Count.Should().Equals(2);
-            linkedList.IsEmpty.Should().BeFalse();
+            linkedList.IsEmpty.Should().BeFalse(); 
             act.Should().Throw<EmptyNodeException>();
-            act2.Should().Throw<NotBelongToThisListException>();
+            act2.Should().Throw<NullPreviousException>();
+            act3.Should().Throw<NullNextException>();
+            act4.Should().Throw<NotBelongToThisListException>();
         }
 
         [Test]
