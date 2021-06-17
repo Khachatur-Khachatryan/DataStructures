@@ -90,3 +90,12 @@
     bool Contains(INode<T> elem); // search this node 
     ```
     
+### LinkedList
+  
+  Methods:
+  * ```csharp
+    private void ValidateNode(INode<T> node); // validate the node
+    ```
+  * ```csharp
+    private bool IsNull(INode<T> node); // checks is null the node
+    ```
