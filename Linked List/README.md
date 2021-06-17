@@ -25,7 +25,12 @@
   * ```csharp
     public class NotBelongToThisListException : Exception // throws if node is note belong to the linked list
     ```
-    
+  * ```csharp
+    public class NullPreviousException : Exception // throws if Node.Previous is null
+    ```
+  * ```csharp
+    public class NullNextException : Exception // throw if Node.Next is null
+    ```
 ### INode
   
   Properties:
