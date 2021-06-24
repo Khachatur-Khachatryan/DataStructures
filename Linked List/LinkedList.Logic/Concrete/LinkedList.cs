@@ -7,8 +7,8 @@ namespace LinkedList.Logic
     public class LinkedList<T> : ILinkedList<T>
     {
         private int count;
-        private INode<T> head = new Node<T>();
-        private INode<T> tail = new Node<T>();
+        private INode<T> head = new Node<T>() { Previous = null };
+        private INode<T> tail = new Node<T>() { Next = null };
 
 
         public INode<T> Head => head;
@@ -21,9 +21,9 @@ namespace LinkedList.Logic
 
         public void AddAfter(INode<T> node, T data)
         {
-            if (IsNull(node)) throw new ArgumentNullException();
+            if (IsEmpty) throw new EmptyListException();
 
-            var current = new Node<T>(data);
+            var newNode = new Node<T>(data, this);
 
             if (node == Tail) 
                 AddTail(data);
@@ -32,9 +32,9 @@ namespace LinkedList.Logic
             else
             {
                 ValidateNode(node);
-                current.Previous = node;
-                current.Next = node.Next;
-                node.Next = current;
+                newNode.Previous = node;
+                newNode.Next = node.Next;
+                node.Next = newNode;
             }
 
             count++;
@@ -42,9 +42,9 @@ namespace LinkedList.Logic
 
         public INode<T> AddHead(T data)
         {
-            var _head = new Node<T>(data);
-            _head.Next = head;
-            _head.Previous = null;
+            if (IsEmpty) head.Data = data;
+
+            var _head = new Node<T>(data, this)  { Next = head };
             head = _head;
 
             count++;
@@ -53,10 +53,9 @@ namespace LinkedList.Logic
 
         public INode<T> AddTail(T data)
         {
-            var _tail = new Node<T>(data);
-            _tail.Previous = tail;
-            _tail.Next = null;
-            tail.Next = _tail;
+            if (IsEmpty) tail.Data = data;
+
+            var _tail = new Node<T>(data, this) { Previous = tail };
             tail = _tail;
 
             count++;
@@ -65,7 +64,7 @@ namespace LinkedList.Logic
 
         public void RemoveAfter(INode<T> node)
         {
-            if (IsNull(node)) throw new ArgumentNullException();
+            if (IsEmpty) throw new EmptyListException();
 
             if (node == Tail)
                 RemoveTail();
@@ -74,25 +73,32 @@ namespace LinkedList.Logic
             else
             {
                 ValidateNode(node);
-                node.Next = null;
-                node.Next = node.Next.Next;
-                node.Next.Previous = node;
+
+                if (node.Next != null)
+                {
+                    node.Next = node.Next.Next;
+                    node.Next.Previous = node;
+                }
             }
 
-            count++;
+            count--;
         }
 
         public void RemoveHead()
-        { 
-            head = (Node<T>) head.Next;
+        {
+            if (IsEmpty) throw new EmptyListException();
+            
             head.Previous = null;
+            head = head.Next;
 
             count--;
         }
 
         public void RemoveTail()
         {
-            tail = (Node<T>) tail.Previous;
+            if (IsEmpty) throw new EmptyListException();
+            
+            tail = tail.Previous;
             tail.Next = null;
 
             count--;
@@ -100,30 +106,33 @@ namespace LinkedList.Logic
 
         public void Reverse()
         {
-            var element = new Node<T>();
-            while (element.Next != null)
+            var node = new Node<T>(this);
+            while (node.Next != null)
             {
-                var tmp = element.Previous;
-                element.Previous = element.Next;
-                element.Next = tmp;
+                var tmp = node.Previous;
+                node.Previous = node.Next;
+                node.Next = tmp;
             }
         }
 
         public void Clear()
         {
-            head = null;
+            if (IsEmpty) throw new EmptyListException();
+
+            while(head != null) RemoveHead();
             tail = null;
             count = 0;
         }
 
         public INode<T> Find(T data) 
         {
+            if (IsEmpty) throw new EmptyListException();
+
             var current = Head;
 
-            for (int i = 0; i < Count; i++) 
+            while (current != null) 
             {
                 if (current.Data.Equals(data)) break;
-                else if (current == null) break;
                 current = current.Next;
             }
             
@@ -132,26 +141,13 @@ namespace LinkedList.Logic
 
         public bool Contains(T data)
         {
+            if (IsEmpty) throw new EmptyListException();
+
             var current = Head;
 
-            for (int i = 1; i < Count; i++)
+            while (current != null)
             {
                 if (current.Data.Equals(data)) return true;
-                else if (current == null) break;
-                current = current.Next;
-            }
-
-            return false;
-        }
-
-        public bool Contains(INode<T> elem)
-        {
-            var current = Head;
-
-            for (int i = 0; i < Count; i++)
-            {
-                if (current == elem) return true;
-                else if (current == null) break;
                 current = current.Next;
             }
 
@@ -160,20 +156,13 @@ namespace LinkedList.Logic
 
         private void ValidateNode(INode<T> node)
         {
-            if (node.Next == null && node.Previous == null)
-                throw new EmptyNodeException();
-            else if (node.Next == null)
-                throw new NullNextException();
-            else if (node.Previous == null)
-                throw new NullPreviousException();
-            else if (Contains(node) == false)
-                throw new NotBelongToThisListException();
-        }
+            if (node.Next == null && node.Previous == null) throw new EmptyNodeException();
 
-        private bool IsNull(INode<T> node)
-        {
-            if (node == null) return true;
-            return false;
+            if (node.Next == null) throw new NullNextException();
+
+            if (node.Previous == null) throw new NullPreviousException();
+
+            if (node.List != this) throw new NotBelongToThisListException();
         }
     }
 }
